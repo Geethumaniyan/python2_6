@@ -1,0 +1,332 @@
+# AI/ML Internship – Day 45 Notes & Tasks
+
+## Module 6: Installing YOLO & Running Your First Object Detection Project
+
+---
+
+# Theory Questions
+
+## 1. What is YOLOv8?
+
+**Answer:**
+
+YOLOv8 (You Only Look Once Version 8) is the latest object detection model developed by Ultralytics. It is used to detect multiple objects in images and videos in a single scan. It also supports image classification, segmentation, and pose estimation. YOLOv8 is faster, more accurate, and easier to use than previous versions.
+
+---
+
+## 2. What is a pretrained model?
+
+**Answer:**
+
+A pretrained model is a machine learning model that has already been trained on a large dataset. It already knows how to recognize common objects, so users can use it directly without training it from scratch.
+
+---
+
+## 3. What is a confidence score?
+
+**Answer:**
+
+A confidence score is the probability that the detected object is correct. It is shown as a percentage. A higher confidence score means the model is more certain about its prediction.
+
+**Example:**
+
+* Person → 98%
+* Car → 95%
+* Dog → 92%
+
+---
+
+## 4. Why is YOLOv8 popular?
+
+**Answer:**
+
+YOLOv8 is popular because:
+
+* It is very fast.
+* It provides high accuracy.
+* It is easy to install and use.
+* It supports multiple computer vision tasks.
+* It comes with pretrained models that work without additional training.
+
+---
+
+## 5. Difference between YOLOv8n and YOLOv8x
+
+| YOLOv8n            | YOLOv8x                 |
+| ------------------ | ----------------------- |
+| Nano model         | Extra Large model       |
+| Very fast          | Slower                  |
+| Small model size   | Large model size        |
+| Lower accuracy     | Higher accuracy         |
+| Best for beginners | Best for advanced users |
+
+---
+
+# Practical Task 1
+
+## Install YOLO
+
+Open the VS Code terminal and run:
+
+```bash
+pip install ultralytics
+```
+
+Take a screenshot after the installation is completed successfully.
+
+---
+
+# Practical Task 2
+
+Verify the installation by running:
+
+```bash
+yolo checks
+```
+
+**Expected Output:**
+
+```
+Python ✓
+Torch ✓
+CUDA ✓
+Ultralytics ✓
+```
+
+Take a screenshot.
+
+---
+
+# Practical Task 3
+
+## Create a Python file
+
+Create a file named:
+
+```
+detect.py
+```
+
+Write the following code:
+
+```python
+from ultralytics import YOLO
+
+# Load the pretrained YOLOv8 Nano model
+model = YOLO("yolov8n.pt")
+
+print("YOLOv8 model loaded successfully!")
+```
+
+Run the program:
+
+```bash
+python detect.py
+```
+
+**Expected Output:**
+
+```
+Downloading yolov8n.pt...
+YOLOv8 model loaded successfully!
+```
+
+---
+
+# Practical Task 4
+
+## Download an Image
+
+Download any image that contains one or more of the following objects:
+
+* Person
+* Car
+* Dog
+
+Save the image in the same folder as your Python program.
+
+Example folder:
+
+```
+YOLO_Project/
+│
+├── detect.py
+├── image.jpg
+```
+
+Replace the code in **detect.py** with:
+
+```python
+from ultralytics import YOLO
+
+# Load the YOLO model
+model = YOLO("yolov8n.pt")
+
+# Perform object detection
+results = model("image.jpg", save=True)
+
+# Display the detected image
+results[0].show()
+
+print("Object detection completed successfully!")
+```
+
+Run:
+
+```bash
+python detect.py
+```
+
+After execution, YOLO automatically creates:
+
+```
+runs/
+└── detect/
+    └── predict/
+        └── image.jpg
+```
+
+The output image contains bounding boxes around all detected objects.
+
+---
+
+# Practical Task 5
+
+## Display Detected Objects with Confidence Scores
+
+Replace the code with the following:
+
+```python
+from ultralytics import YOLO
+
+# Load YOLOv8 model
+model = YOLO("yolov8n.pt")
+
+# Detect objects
+results = model("image.jpg", save=True)
+
+print("Detected Objects:")
+
+for box in results[0].boxes:
+    class_id = int(box.cls[0])
+    class_name = model.names[class_id]
+    confidence = float(box.conf[0])
+
+    print(f"{class_name} -> {confidence:.2%}")
+```
+
+**Example Output:**
+
+```
+Detected Objects:
+
+person -> 97.45%
+car -> 95.80%
+dog -> 92.13%
+```
+
+---
+
+# Complete Python Program
+
+```python
+from ultralytics import YOLO
+
+# Load pretrained YOLOv8 Nano model
+model = YOLO("yolov8n.pt")
+
+# Perform object detection on the image
+results = model("image.jpg", save=True)
+
+# Display detected image
+results[0].show()
+
+print("\nDetected Objects and Confidence Scores:\n")
+
+# Print detected object names and confidence scores
+for box in results[0].boxes:
+    class_id = int(box.cls[0])
+    class_name = model.names[class_id]
+    confidence = float(box.conf[0])
+
+    print(f"{class_name} -> {confidence:.2%}")
+
+print("\nObject detection completed successfully!")
+```
+
+---
+
+# Project Folder Structure
+
+```
+YOLO_Project/
+│
+├── detect.py
+├── image.jpg
+├── yolov8n.pt
+│
+└── runs/
+    └── detect/
+        └── predict/
+            └── image.jpg
+```
+
+---
+
+# Commands Used
+
+## Check Python Version
+
+```bash
+python --version
+```
+
+## Create Virtual Environment
+
+```bash
+python -m venv yolo_env
+```
+
+## Activate Virtual Environment (Windows)
+
+```bash
+yolo_env\Scripts\activate
+```
+
+## Activate Virtual Environment (Linux/Mac)
+
+```bash
+source yolo_env/bin/activate
+```
+
+## Install YOLOv8
+
+```bash
+pip install ultralytics
+```
+
+## Verify Installation
+
+```bash
+yolo checks
+```
+
+## Run the Python Program
+
+```bash
+python detect.py
+```
+
+---
+
+# Expected Learning Outcomes
+
+After completing this task, you will be able to:
+
+* Understand the basics of YOLOv8.
+* Install the Ultralytics package.
+* Load a pretrained YOLOv8 model.
+* Perform object detection on images.
+* Save detection results automatically.
+* Display detected objects with confidence scores.
+* Understand the advantages of pretrained models.

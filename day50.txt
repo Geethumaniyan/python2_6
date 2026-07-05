@@ -1,0 +1,272 @@
+"""
+=========================================================
+AI/ML Internship – Day 50
+Module 6: Building a Complete Custom YOLO Project
+Helmet Detection Project
+=========================================================
+
+THEORY ANSWERS
+=========================================================
+
+1. Explain the complete YOLO workflow.
+
+Answer:
+The complete YOLO workflow includes the following steps:
+
+1. Problem Identification
+2. Data Collection
+3. Image Annotation
+4. Dataset Preparation
+5. Create data.yaml
+6. Train the YOLO Model
+7. Evaluate the Model
+8. Test the Model
+9. Deploy the Model
+
+The workflow starts by identifying the problem, collecting images, labeling objects, preparing the dataset, training the model, evaluating its performance, testing it on new images, and finally deploying it for real-world use.
+
+---------------------------------------------------------
+
+2. Why is annotation important?
+
+Answer:
+Annotation is important because it tells the YOLO model where the object is located in each image. During annotation, bounding boxes and class labels are assigned to objects. YOLO learns from these labeled images to detect similar objects in new images.
+
+---------------------------------------------------------
+
+3. What is best.pt?
+
+Answer:
+best.pt is the best trained YOLO model generated after training. It stores the model weights that achieved the highest accuracy during training and is used for testing and deployment.
+
+---------------------------------------------------------
+
+4. What is deployment?
+
+Answer:
+Deployment is the process of using the trained YOLO model in a real-world application such as CCTV surveillance, helmet detection, traffic monitoring, industrial safety, and smart security systems.
+
+---------------------------------------------------------
+
+5. Explain the role of data.yaml.
+
+Answer:
+data.yaml is the configuration file used by YOLO.
+
+It contains:
+
+• Training dataset path
+• Validation dataset path
+• Number of classes
+• Class names
+
+YOLO reads this file before training.
+
+=========================================================
+PRACTICAL TASK 1
+Create Helmet Detection Project Folder
+=========================================================
+
+helmet_detection_project/
+│
+├── helmet_dataset/
+│
+├── data.yaml
+│
+├── train_model.py
+│
+├── test_model.py
+│
+├── helmet_detection_webcam.py
+│
+└── workflow.txt
+
+=========================================================
+PRACTICAL TASK 2
+Dataset Structure
+=========================================================
+
+helmet_dataset/
+│
+├── images/
+│   ├── train/
+│   └── val/
+│
+└── labels/
+    ├── train/
+    └── val/
+
+=========================================================
+PRACTICAL TASK 3
+data.yaml
+=========================================================
+
+train: helmet_dataset/images/train
+val: helmet_dataset/images/val
+
+nc: 1
+
+names:
+  - helmet
+
+=========================================================
+PRACTICAL TASK 4
+YOLO Training Code
+=========================================================
+
+from ultralytics import YOLO
+
+# Load YOLOv8 Nano Model
+model = YOLO("yolov8n.pt")
+
+# Train the model
+model.train(
+    data="data.yaml",
+    epochs=20,
+    imgsz=640,
+    batch=8
+)
+
+print("Training Completed Successfully!")
+
+=========================================================
+Testing Code
+=========================================================
+
+from ultralytics import YOLO
+
+# Load trained model
+model = YOLO("runs/detect/train/weights/best.pt")
+
+# Test image
+results = model("test_image.jpg")
+
+# Display result
+results[0].show()
+
+print("Testing Completed Successfully!")
+
+=========================================================
+Real-Time Webcam Detection
+=========================================================
+
+import cv2
+from ultralytics import YOLO
+
+# Load trained model
+model = YOLO("runs/detect/train/weights/best.pt")
+
+# Open Webcam
+cap = cv2.VideoCapture(0)
+
+while True:
+
+    success, frame = cap.read()
+
+    if not success:
+        break
+
+    results = model(frame)
+
+    annotated_frame = results[0].plot()
+
+    cv2.imshow("Helmet Detection", annotated_frame)
+
+    if cv2.waitKey(1) == 27:
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+
+=========================================================
+PRACTICAL TASK 5
+Complete YOLO Workflow Diagram
+=========================================================
+
+Problem Identification
+        │
+        ▼
+Data Collection
+        │
+        ▼
+Image Annotation
+        │
+        ▼
+Dataset Preparation
+        │
+        ▼
+Create data.yaml
+        │
+        ▼
+Load YOLO Model
+        │
+        ▼
+Train Model
+        │
+        ▼
+Evaluate Model
+        │
+        ▼
+Test Model
+        │
+        ▼
+Deploy Model
+
+=========================================================
+Interview Questions
+=========================================================
+
+Q1. What is a Custom YOLO Project?
+
+Answer:
+A Custom YOLO Project is a project where YOLO is trained to detect user-defined objects instead of only the default COCO dataset objects.
+
+---------------------------------------------------------
+
+Q2. What are the main components of a YOLO project?
+
+Answer:
+
+• Dataset
+• Annotation
+• Dataset Preparation
+• data.yaml
+• Model Training
+• Model Evaluation
+• Testing
+• Deployment
+
+---------------------------------------------------------
+
+Q3. Why do we use custom training?
+
+Answer:
+Custom training is used to detect objects that are not available in the pretrained YOLO dataset, such as helmets, safety vests, ID cards, fruits, defects, or company-specific products.
+
+=========================================================
+Project Summary
+=========================================================
+
+Project Name : Helmet Detection System
+
+Objective:
+Detect whether workers are wearing safety helmets using YOLOv8.
+
+Software Required:
+• Python
+• YOLOv8
+• OpenCV
+
+Hardware Required:
+• Laptop/Desktop
+• Webcam (Optional)
+
+Dataset:
+Helmet Images
+
+Output:
+The trained model detects helmets with bounding boxes and confidence scores in images, videos, or live webcam streams.
+
+=========================================================
+End of Day 50 Assignment
+=========================================================
